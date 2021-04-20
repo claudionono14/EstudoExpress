@@ -1,16 +1,16 @@
 //chamando o módulo express
-const { response } = require('express');
+const { response, request } = require('express'); //Linha incluída pelo VS Code 
 const express = require('express');
 
 //executando o express
 const app = express();
 
+//Habilitando o uso do json no express, ou seja, o servidor não recebe os dados do usuário
+app.use(express.json());
+
 //criando lista de usuários
 let usuarios = [
-    {
-        nome: 'Claudio',
-        Sobrenome: 'Carvalho'
-    }
+    { nome: 'Claudio', Sobrenome: 'Carvalho'}
 ]
 
 
@@ -29,7 +29,28 @@ app.get('/usuarios', (request, response) => {
 });
 
 
-//iniciando o servidor
+//criando rota POST
+app.post('/usuarios', (request, response) => {
+    const {nome, sobrenome} = request.body //aplica desestruração pegando o nome e o sobrenome do objeto informado
+    
+    usuarios.push({nome, sobrenome}); //adiciona o novo objeto no array de usuários
+    
+    return response.json({nome, sobrenome}); //retorna o objeto que acabou de ser adicionado
+});
+
+
+//criando rota PUT
+//(http://localhost:3000/usuarios/claudio)
+app.put('usuarios/:nome', (request, response) => {
+   const { nome } = request.params;
+
+   const { sobrenome } = request.body;
+
+   
+});
+
+
+//iniciando o servidor Express
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000')
 });
