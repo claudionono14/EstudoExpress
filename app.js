@@ -10,7 +10,7 @@ app.use(express.json());
 
 //criando lista de usuários
 let usuarios = [
-    { nome: 'Claudio', Sobrenome: 'Carvalho'}
+    { nome: 'Claudio', sobrenome: 'Carvalho'}
 ]
 
 
@@ -20,7 +20,8 @@ app.get('/home', (request, response) => {
     return response.send('Olá mundo') //O return não é obrigatório
 }); /* Esta rota vai fazer com que o método HTTP GET seja utilizado,
 indo buscar uma informação no servidor. Neste caso, quando damos um GET
-no caminha /home, ele vai retornar a frase "OLÁ MUNDO"*/
+no caminho /home, ele vai retornar a frase "OLÁ MUNDO"*/
+
 
 //Criando rota para a lista de usuários
 //(http://localhost:3000/usuarios)
@@ -41,13 +42,29 @@ app.post('/usuarios', (request, response) => {
 
 //criando rota PUT
 //(http://localhost:3000/usuarios/claudio)
-app.put('usuarios/:nome', (request, response) => {
-   const { nome } = request.params;
+    app.put('/usuarios/:nome', (request, response) => {
+   
+    const { nome } = request.params;
 
    const { sobrenome } = request.body;
 
-   
+   let mudaSobrenome = usuarios.find(function (nomeBuscado) {
+       return nomeBuscado.nome === nome
+   })
+
+   mudaSobrenome.sobrenome = sobrenome
+
+   return response.json(mudaSobrenome);
 });
+
+app.delete('/usuarios/:nome', (request, response) => {
+    const { nome } = request.params;
+    
+    usuarios.splice(usuarios.indexOf(nome),1)
+    
+    return response.json(usuarios)
+})
+
 
 
 //iniciando o servidor Express
