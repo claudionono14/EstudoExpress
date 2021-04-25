@@ -60,7 +60,11 @@ app.post('/usuarios', (request, response) => {
 app.delete('/usuarios/:nome', (request, response) => {
     const { nome } = request.params;
     
-    usuarios.splice(usuarios.indexOf(nome),1)
+    let objetoExcluido = usuarios.find(function (nomeBuscado) {
+        return nomeBuscado.nome === nome
+    })
+
+    usuarios.splice(usuarios.indexOf(objetoExcluido),1)
     
     return response.json(usuarios)
 })
